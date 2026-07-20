@@ -6,7 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
 
     steps:
     - name: Checkout repository
@@ -17,26 +16,15 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt update
         sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libffi-dev libssl-dev
         pip install --upgrade pip
         pip install "cython<3.0.0" buildozer
 
-    - name: Configure and Build APK
-      env:
-        CI: 1
+    - name: Build APK with Buildozer
       run: |
-        if [ ! -f buildozer.spec ]; then
-          buildozer init
-          # Configuración optimizada
-          sed -i 's/android.api = .*/android.api = 33/' buildozer.spec
-          sed -i 's/android.archs = arm64-v8a, armeabi-v7a/android.archs = arm64-v8a/' buildozer.spec
-          sed -i 's/# android.accept_sdk_license = False/android.accept_sdk_license = True/' buildozer.spec
-        fi
-
-        # Ejecutar en modo no interactivo
         buildozer -v android debug
 
     - name: Upload APK artifact
@@ -44,4 +32,3 @@ jobs:
       with:
         name: app-release
         path: bin/*.apk
-
