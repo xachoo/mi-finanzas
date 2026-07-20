@@ -14,6 +14,11 @@ package.name = mifinanzas
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
 
+android.api = 33
+android.build_tools_version = 33.0.2
+android.accept_sdk_license = True
+
+
 # (str) Source code where the main.py live
 source.dir = .
 
