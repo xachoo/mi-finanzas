@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
     - name: Checkout repository
@@ -24,19 +25,23 @@ jobs:
         pip install "cython<3.0.0" buildozer
 
     - name: Configure and Build APK
+      env:
+        CI: 1
       run: |
         if [ ! -f buildozer.spec ]; then
           buildozer init
-          # Ajustamos versiones para maxima estabilidad
+          # Configuración optimizada
           sed -i 's/android.api = .*/android.api = 33/' buildozer.spec
           sed -i 's/android.archs = arm64-v8a, armeabi-v7a/android.archs = arm64-v8a/' buildozer.spec
+          sed -i 's/# android.accept_sdk_license = False/android.accept_sdk_license = True/' buildozer.spec
         fi
 
-        # Compilar aceptando licencias de forma nativa desde Buildozer
-        buildozer --accept-sdk-license android debug
+        # Ejecutar en modo no interactivo
+        buildozer -v android debug
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
         name: app-release
         path: bin/*.apk
+
