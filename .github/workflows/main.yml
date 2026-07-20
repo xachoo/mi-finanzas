@@ -27,21 +27,13 @@ jobs:
       run: |
         if [ ! -f buildozer.spec ]; then
           buildozer init
-          # Usar API 33 estable y una sola arquitectura
+          # Ajustamos versiones para maxima estabilidad
           sed -i 's/android.api = .*/android.api = 33/' buildozer.spec
           sed -i 's/android.archs = arm64-v8a, armeabi-v7a/android.archs = arm64-v8a/' buildozer.spec
         fi
-        
-        # Aceptar licencias de Android SDK directamente en disco para evitar el bloqueo (y/N)
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
-        echo -e "\n24333f8a637bba39ea84412c9f2e08407428d200" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        echo -e "\n84831b9409646a578f447d4700037e8b1324e4b5" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
-        echo -e "\nd97586452f77013fe170732215168d71964e8194" > ~/.buildozer/android/platform/android-sdk/licenses/intel-android-sysimage-license
 
-        # Compilar APK
-        buildozer -v android debug
+        # Compilar aceptando licencias de forma nativa desde Buildozer
+        buildozer --accept-sdk-license android debug
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
