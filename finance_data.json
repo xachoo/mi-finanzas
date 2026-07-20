@@ -1,0 +1,236 @@
+{
+  "disponible_desglose": {
+    "Banreservas *5935": 3538,
+    "BP Principal *9662": 80949,
+    "BP Secundaria *6443": -0.05
+  },
+  "tarjetas": {
+    "Banreservas Visa *0118": {
+      "balance_corte": 0,
+      "dia_pago": 24,
+      "mes_offset": 1,
+      "historial": []
+    },
+    "BP Visa Clásica *0512": {
+      "balance_corte": 8762,
+      "dia_pago": 10,
+      "mes_offset": 0,
+      "historial": []
+    },
+    "BP Visa ISI *5009": {
+      "balance_corte": 1586,
+      "dia_pago": 10,
+      "mes_offset": 0,
+      "historial": []
+    },
+    "Credimás": {
+      "balance_corte": 8763,
+      "cuota_siguiente": 0,
+      "dia_pago": 24,
+      "mes_offset": 0,
+      "historial": []
+    }
+  },
+  "deudores_historial": {
+    "Mami Nena": [
+      {
+        "descripcion": "Deuda vieja",
+        "monto": 37194,
+        "fecha": "09/07/2026"
+      },
+      {
+        "descripcion": "Farmacia del hospital",
+        "monto": 2160,
+        "fecha": "12/07/2026"
+      },
+      {
+        "descripcion": "Supermercado",
+        "monto": 1488,
+        "fecha": "12/07/2026"
+      },
+      {
+        "descripcion": "Supermercado",
+        "monto": 768,
+        "fecha": "12/07/2026"
+      },
+      {
+        "descripcion": "Pasaje mami y papi",
+        "monto": 3000,
+        "fecha": "13/07/2026"
+      },
+      {
+        "descripcion": "Gas",
+        "monto": 2000,
+        "fecha": "13/07/2026"
+      },
+      {
+        "descripcion": "Taxi miércoles",
+        "monto": 1500,
+        "fecha": "16/07/2026"
+      },
+      {
+        "descripcion": "Silla de baño",
+        "monto": 4000,
+        "fecha": "17/07/2026"
+      },
+      {
+        "descripcion": "Pasaje viernes",
+        "monto": 1500,
+        "fecha": "17/07/2026"
+      }
+    ],
+    "Jack Sánchez": [
+      {
+        "descripcion": "Disposición Santiago",
+        "monto": 500,
+        "fecha": "16/07/2026"
+      },
+      {
+        "descripcion": "Disposición punta cana",
+        "monto": 500,
+        "fecha": "16/07/2026"
+      },
+      {
+        "descripcion": "Disposición Frank fuentes",
+        "monto": 500,
+        "fecha": "17/07/2026"
+      },
+      {
+        "descripcion": "Dieta punta cana",
+        "monto": 300,
+        "fecha": "18/07/2026"
+      },
+      {
+        "descripcion": "Combustible",
+        "monto": 4064,
+        "fecha": "18/07/2026"
+      }
+    ]
+  },
+  "gastos_hoy": [],
+  "deudores_contactos": {
+    "Mami Nena": {
+      "telefono": "+49 1515 9845029",
+      "email": "",
+      "direccion": "Alemania"
+    },
+    "Jack Sánchez": {
+      "telefono": "8299089999",
+      "email": "",
+      "direccion": "Jean Luis 6"
+    }
+  },
+  "deudores_movimientos": {
+    "Mami Nena": [
+      {
+        "tipo": "prestamo",
+        "concepto": "Deuda vieja",
+        "monto": 37194,
+        "balance_antes": 0,
+        "balance_despues": 37194,
+        "fecha": "09/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Farmacia del hospital",
+        "monto": 2160,
+        "balance_antes": 37194,
+        "balance_despues": 39354,
+        "fecha": "12/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Supermercado",
+        "monto": 1488,
+        "balance_antes": 39354,
+        "balance_despues": 40842,
+        "fecha": "12/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Supermercado",
+        "monto": 768,
+        "balance_antes": 40842,
+        "balance_despues": 41610,
+        "fecha": "12/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Pasaje mami y papi",
+        "monto": 3000,
+        "balance_antes": 41610,
+        "balance_despues": 44610,
+        "fecha": "13/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Gas",
+        "monto": 2000,
+        "balance_antes": 44610,
+        "balance_despues": 46610,
+        "fecha": "13/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Taxi miércoles",
+        "monto": 1500,
+        "balance_antes": 46610,
+        "balance_despues": 48110,
+        "fecha": "16/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Silla de baño",
+        "monto": 4000,
+        "balance_antes": 48110,
+        "balance_despues": 52110,
+        "fecha": "17/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Pasaje viernes",
+        "monto": 1500,
+        "balance_antes": 52110,
+        "balance_despues": 53610,
+        "fecha": "17/07/2026"
+      }
+    ],
+    "Jack Sánchez": [
+      {
+        "tipo": "prestamo",
+        "concepto": "Disposición Santiago",
+        "monto": 500,
+        "balance_antes": 0,
+        "balance_despues": 500,
+        "fecha": "16/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Disposición punta cana",
+        "monto": 500,
+        "balance_antes": 500,
+        "balance_despues": 1000,
+        "fecha": "16/07/2026"
+      },
+      {
+        "tipo": "prestamo",
+        "concepto": "Disposición Frank fuentes",
+        "monto": 500,
+        "balance_antes": 1000,
+        "balance_despues": 1500,
+        "fecha": "17/07/2026"
+      }
+    ]
+  },
+  "gastos_fijos_financiados": {
+    "Paola shaba": {
+      "nombre": "Paola shaba",
+      "tipo": "amortizacion",
+      "precio_total": 40000,
+      "cuotas_total": 48,
+      "cuota_actual": 1,
+      "monto_cuota": 1440.2397516168746,
+      "tasa_anual": 30
+    }
+  }
+}
