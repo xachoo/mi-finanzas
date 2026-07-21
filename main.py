@@ -24,8 +24,8 @@ from datetime import datetime
 #     os.environ.setdefault("KIVY_GL_BACKEND", "mock")
 
 from kivy.config import Config as KivyConfig
-KivyConfig.set("graphics", "width",  "260")
-KivyConfig.set("graphics", "height", "640")
+KivyConfig.set("graphics", "width",  "400")
+KivyConfig.set("graphics", "height", "740")
 
 # ── Kivy / KivyMD ─────────────────────────────────────────────────────────────
 from kivy.lang         import Builder
