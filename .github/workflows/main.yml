@@ -40,6 +40,8 @@ jobs:
             libavformat-dev \
             libavcodec-dev \
             zlib1g-dev \
+            libffi-dev \
+            libssl-dev \
             zip \
             unzip
 
