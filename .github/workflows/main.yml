@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Usamos ubuntu-22.04 para mayor estabilidad con Buildozer
 
     steps:
       # 1. Descargar el código
@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      # 3. Instalar dependencias del sistema necesarias para Kivy/Buildozer
+      # 3. Instalar dependencias del sistema requeridas
       - name: Install System Dependencies
         run: |
           sudo apt-get update
@@ -47,14 +47,16 @@ jobs:
       - name: Install Buildozer
         run: |
           pip install --upgrade pip
-          pip install buildozer cython
+          pip install "buildozer>=1.5.0" cython
 
-      # 5. Compilar el APK (Aceptando licencias automáticamente)
+      # 5. Compilar el APK con Buildozer
       - name: Build APK
+        env:
+          ACCEPT_BUILD_NDK_LICENSES: '1'
         run: |
-          yes | buildozer android debug
+          buildozer -v android debug
 
-      # 6. Subir el APK resultante a los Artifacts
+      # 6. Subir el APK resultante a Artifacts
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
