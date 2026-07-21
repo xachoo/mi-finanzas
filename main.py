@@ -1,3 +1,25 @@
+from kivy.storage.jsonstore    import JsonStore
+from kivy.uix.boxlayout       import BoxLayout
+from kivy.uix.scrollview      import ScrollView
+from kivy.uix.screenmanager   import ScreenManager, Screen, FadeTransition
+from kivy.uix.image           import Image as KivyImage
+from kivy.uix.popup           import Popup
+
+from kivymd.app               import MDApp
+from kivymd.uix.button        import MDRaisedButton, MDFlatButton, MDIconButton
+from kivymd.uix.textfield     import MDTextField
+from kivymd.uix.label         import MDLabel
+from kivymd.uix.card          import MDCard
+from kivymd.uix.list          import (MDList, OneLineListItem,
+                                      TwoLineListItem, ThreeLineListItem,
+                                      IconRightWidget, IconLeftWidget)
+from kivymd.uix.dialog        import MDDialog
+from kivymd.uix.bottomnavigation import (MDBottomNavigation,
+                                          MDBottomNavigationItem)
+from kivymd.uix.menu          import MDDropdownMenu
+from kivymd.uix.snackbar      import Snackbar
+from kivymd.uix.selectioncontrol import MDSwitch
+from kivymd.uix.toolbar       import MDTopAppBar
 """
 Mis Finanzas — App KivyMD para gestión de finanzas personales (RD$).
 
@@ -13,6 +35,7 @@ Arquitectura:
 Desplegable vía Buildozer en Android.
 En Replit/Linux sin pantalla usa backend headless.
 """
+
 
 # ── Entorno Kivy (ANTES de cualquier import de kivy) ─────────────────────────
 import os, io, sys, json, base64, tempfile, urllib.request
@@ -2156,28 +2179,9 @@ class FinanzasApp(MDApp):
 
 # Punto de entrada principal para ejecutar la aplicación
 if __name__ == "__main__":
-    FinanzasApp().run()from kivy.storage.jsonstore    import JsonStore
-from kivy.uix.boxlayout       import BoxLayout
-from kivy.uix.scrollview      import ScrollView
-from kivy.uix.screenmanager   import ScreenManager, Screen, FadeTransition
-from kivy.uix.image           import Image as KivyImage
-from kivy.uix.popup           import Popup
 
-from kivymd.app               import MDApp
-from kivymd.uix.button        import MDRaisedButton, MDFlatButton, MDIconButton
-from kivymd.uix.textfield     import MDTextField
-from kivymd.uix.label         import MDLabel
-from kivymd.uix.card          import MDCard
-from kivymd.uix.list          import (MDList, OneLineListItem,
-                                      TwoLineListItem, ThreeLineListItem,
-                                      IconRightWidget, IconLeftWidget)
-from kivymd.uix.dialog        import MDDialog
-from kivymd.uix.bottomnavigation import (MDBottomNavigation,
-                                          MDBottomNavigationItem)
-from kivymd.uix.menu          import MDDropdownMenu
-from kivymd.uix.snackbar      import Snackbar
-from kivymd.uix.selectioncontrol import MDSwitch
-from kivymd.uix.toolbar       import MDTopAppBar
+    FinanzasApp().run()
+
 
 # ── PIL ───────────────────────────────────────────────────────────────────────
 try:

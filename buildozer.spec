@@ -1,4 +1,4 @@
-sudo
+
 # (str) Title of your application
 title = Mi Finanzas
 
