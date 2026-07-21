@@ -1,47 +1,30 @@
-name: Build Android APK
+ name: Build Android APK (Buildozer)
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch: # Permite ejecutar el proceso manualmente desde la pestaña Actions
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-      # 1. Descarga el código de tu repositorio
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Configura Java (JDK 17 es la versión requerida para las versiones recientes de Android/Flutter)
-      - name: Set up Java Development Kit (JDK)
-        uses: actions/setup-java@v4
+      # Utiliza la acción oficial para compilar proyectos Kivy/Python con Buildozer
+      - name: Build APK with Buildozer
+        uses: ArtemSydoryk/buildozer-action@v1.2.0
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          command: buildozer android debug
+          buildozer_version: master
 
-      # 3. Configura Flutter en la versión estable
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.x'
-          channel: 'stable'
-          cache: true # Guarda la caché de Flutter para que las siguientes ejecuciones sean más rápidas
-
-      # 4. Obtiene todas las dependencias del proyecto
-      - name: Install dependencies
-        run: flutter pub get
-
-      # 5. Compila el APK de la aplicación (en modo Release)
-      - name: Build APK
-        run: flutter build apk --release
-
-      # 6. Sube el archivo APK generado como un Artifact para que lo puedas descargar directamente
+      # Guarda el archivo APK generado para que lo puedas descargar
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: app-debug-apk
+          path: bin/*.apk
