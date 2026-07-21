@@ -23,12 +23,9 @@ jobs:
         pip install --upgrade pip
         pip install "cython<3.0.0" buildozer
 
-    - name: Build APK with Buildozer
+        - name: Build APK with Buildozer
       run: |
+        export ANDROID_NDK_HOME=""
+        export ANDROID_NDK_ROOT=""
         buildozer -v android debug
 
-    - name: Upload APK artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-release
-        path: bin/*.apk
