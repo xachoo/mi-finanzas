@@ -76,7 +76,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import db  # finanzas/db.py
 
 # ── Constantes ────────────────────────────────────────────────────────────────
-DIR      = os.path.dirname(os.path.abspath(__file__))
+DIR        = os.path.dirname(os.path.abspath(__file__))
 STORE_PATH = os.path.join(DIR, "sesion.json")
 
 TIPOS_MOVIMIENTO = [
@@ -91,6 +91,20 @@ TIPOS_MOVIMIENTO = [
 PURPLE = [0.38, 0.30, 0.73, 1]   # #614DB5
 GREEN  = [0.20, 0.73, 0.44, 1]
 RED    = [0.94, 0.34, 0.34, 1]
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# CLASES DE WIDGETS PERSONALIZADOS
+# ══════════════════════════════════════════════════════════════════════════════
+
+class RoundCard(MDCard):
+    pass
+
+class SectionLabel(MDLabel):
+    pass
+
+class BigMonto(MDLabel):
+    pass
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -130,7 +144,6 @@ def ocr_desde_ruta(ruta: str) -> dict:
     """
     resultado = {"descripcion": "", "monto": "", "fecha": "", "hora": ""}
 
-    # 1. pytesseract ──────────────────────────────────────────────────────────
     if HAS_TESSERACT and HAS_PIL:
         import re
         try:
@@ -156,7 +169,6 @@ def ocr_desde_ruta(ruta: str) -> dict:
         except Exception:
             pass
 
-    # 2. GPT-4o-mini via API ──────────────────────────────────────────────────
     api_key = os.environ.get("OPENAI_API_KEY", "")
     if api_key and HAS_PIL:
         import re as _re
@@ -215,19 +227,19 @@ KV = """
 #:import dp kivy.metrics.dp
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition
 
-<RoundCard@MDCard>:
+<RoundCard>:
     radius: [14]
     padding: dp(16)
     elevation: 2
     md_bg_color: app.theme_cls.bg_dark
 
-<SectionLabel@MDLabel>:
+<SectionLabel>:
     font_style: 'Subtitle1'
     theme_text_color: 'Secondary'
     size_hint_y: None
     height: dp(32)
 
-<BigMonto@MDLabel>:
+<BigMonto>:
     font_style: 'H4'
     halign: 'center'
     bold: True
@@ -383,7 +395,6 @@ ScreenManager:
             size_hint_y: None
             height: self.minimum_height
 
-            # Disponible Actual
             RoundCard:
                 size_hint_y: None
                 height: dp(130)
@@ -406,7 +417,6 @@ ScreenManager:
                         size_hint_y: None
                         height: dp(22)
 
-            # Ingreso base editable
             RoundCard:
                 size_hint_y: None
                 height: dp(90)
@@ -429,7 +439,6 @@ ScreenManager:
                             width: dp(58)
                             on_release: root.guardar_ingreso()
 
-            # Fijos pendientes resumen
             BoxLayout:
                 id: box_fijos
                 orientation: 'vertical'
@@ -455,7 +464,6 @@ ScreenManager:
             size_hint_y: None
             height: self.minimum_height
 
-            # Botón Escanear
             MDRaisedButton:
                 id: btn_scan
                 text: '📷  Escanear Comprobante / Voucher'
@@ -503,7 +511,6 @@ ScreenManager:
                 size_hint_y: None
                 height: dp(52)
 
-            # Tipo de movimiento
             MDRaisedButton:
                 id: btn_tipo
                 text: 'Tipo: Consumo  ▾'
@@ -513,7 +520,6 @@ ScreenManager:
                 md_bg_color: app.theme_cls.bg_normal
                 on_release: root.abrir_menu_tipo(self)
 
-            # Vinculación a gasto fijo (visible solo si tipo = "Pago de gasto fijo")
             BoxLayout:
                 id: box_gasto_fijo
                 orientation: 'vertical'
@@ -529,7 +535,6 @@ ScreenManager:
                     md_bg_color: app.theme_cls.bg_normal
                     on_release: root.abrir_menu_gasto_fijo(self)
 
-            # Vinculación a deudor (visible si tipo = "Pago de deudor")
             BoxLayout:
                 id: box_deudor
                 orientation: 'vertical'
@@ -610,7 +615,6 @@ ScreenManager:
             size_hint_y: None
             height: self.minimum_height
 
-            # ── Gastos Fijos ──────────────────────────────────────────────────
             SectionLabel:
                 text: 'GASTOS FIJOS DEL MES'
 
@@ -629,7 +633,6 @@ ScreenManager:
                 size_hint_y: None
                 height: self.minimum_height
 
-            # ── Historial ─────────────────────────────────────────────────────
             MDLabel:
                 text: ' '
                 size_hint_y: None
@@ -646,7 +649,6 @@ ScreenManager:
                 md_bg_color: app.theme_cls.bg_normal
                 on_release: root.ver_historial()
 
-            # ── Calendario ────────────────────────────────────────────────────
             MDLabel:
                 text: ' '
                 size_hint_y: None
@@ -663,7 +665,6 @@ ScreenManager:
                 md_bg_color: app.theme_cls.bg_normal
                 on_release: root.ver_calendario()
 
-            # ── Amortización ──────────────────────────────────────────────────
             MDLabel:
                 text: ' '
                 size_hint_y: None
@@ -688,7 +689,6 @@ ScreenManager:
                 md_bg_color: 0.07, 0.45, 0.25, 1
                 on_release: root.abrir_autofinanciamiento()
 
-            # ── Migración legado ──────────────────────────────────────────────
             MDLabel:
                 text: ' '
                 size_hint_y: None
@@ -714,7 +714,6 @@ ScreenManager:
                 size_hint_y: None
                 height: dp(24)
 
-            # ── Cerrar Sesión ─────────────────────────────────────────────────
             MDLabel:
                 text: ' '
                 size_hint_y: None
@@ -738,12 +737,10 @@ ScreenManager:
 """
 
 # ══════════════════════════════════════════════════════════════════════════════
-# DIALOG DE VISOR DE VOUCHER (Imagen desde BLOB)
+# COMPONENTES DE PANTALLAS (TABS & SCREENS)
 # ══════════════════════════════════════════════════════════════════════════════
 
 class VoucherContent(BoxLayout):
-    """Contenido del MDDialog que muestra la imagen del comprobante."""
-
     def __init__(self, blob_bytes: bytes, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "vertical"
@@ -760,14 +757,8 @@ class VoucherContent(BoxLayout):
         self.add_widget(img)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# LOBBY SCREEN
-# ══════════════════════════════════════════════════════════════════════════════
-
 class LobbyScreen(Screen):
-
     def on_enter(self):
-        """Comprueba si hay sesión guardada; si sí, salta directo al Main."""
         app = MDApp.get_running_app()
         if app.store.exists("session"):
             correo = app.store.get("session").get("correo", "")
@@ -802,14 +793,8 @@ class LobbyScreen(Screen):
         self.manager.current = "main"
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# MAIN SCREEN
-# ══════════════════════════════════════════════════════════════════════════════
-
 class MainScreen(Screen):
-
     def on_enter(self):
-        """Refresca todos los tabs al entrar a la pantalla principal."""
         Clock.schedule_once(self._refrescar, 0.2)
 
     def _refrescar(self, *_):
@@ -820,12 +805,7 @@ class MainScreen(Screen):
         self.ids.tab_movimiento.refrescar()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# INICIO TAB
-# ══════════════════════════════════════════════════════════════════════════════
-
 class InicioTab(BoxLayout):
-
     def on_kv_post(self, base):
         Clock.schedule_once(lambda dt: self.refrescar(), 0.5)
 
@@ -848,7 +828,6 @@ class InicioTab(BoxLayout):
             [0.23, 0.78, 0.47, 1] if disp >= 0 else [0.94, 0.34, 0.34, 1]
         )
 
-        # Subtítulo: fijos + tarjetas
         partes_sub = [
             f"Ingresos RD$ {ingreso:,.2f}",
             f"{resumen['num_pendientes']} fijos pendientes",
@@ -859,7 +838,6 @@ class InicioTab(BoxLayout):
             )
         self.ids.lbl_subtitulo.text = "  ·  ".join(partes_sub)
 
-        # Mostrar lista de fijos pendientes
         box = self.ids.box_fijos
         box.clear_widgets()
         for f in resumen["fijos"]:
@@ -877,7 +855,6 @@ class InicioTab(BoxLayout):
             )
             box.add_widget(lbl)
 
-        # Mostrar tarjetas con deuda pendiente
         for t in resumen.get("tarjetas_con_deuda", []):
             lbl_t = MDLabel(
                 text=(f"  💳  ···· {t['ultimos4']}"
@@ -890,7 +867,7 @@ class InicioTab(BoxLayout):
             )
             box.add_widget(lbl_t)
 
-        box.height = box.minimum_height  # type: ignore
+        box.height = box.minimum_height
 
     def guardar_ingreso(self):
         txt = self.ids.tf_ingreso.text.strip().replace(",", ".")
@@ -904,19 +881,7 @@ class InicioTab(BoxLayout):
         mostrar_snack(f"Ingreso base guardado: RD$ {val:,.2f}")
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# MOVIMIENTO TAB
-# ══════════════════════════════════════════════════════════════════════════════
-
 class MovimientoTab(BoxLayout):
-    """
-    Módulo de registro de movimientos con:
-    - Botón de cámara → FileChooser (desktop) / Camera (Android)
-    - Compresión PIL → BLOB SQLite
-    - OCR automático (pytesseract o GPT-4o)
-    - Selectores de tipo con lógica condicional
-    """
-
     _tipo_seleccionado = "Consumo"
     _gasto_fijo_id     = None
     _deudor_id         = None
@@ -942,8 +907,6 @@ class MovimientoTab(BoxLayout):
         ahora = datetime.now()
         self.ids.tf_fecha_mov.text = ahora.strftime("%d/%m/%Y")
         self.ids.tf_hora_mov.text  = ahora.strftime("%H:%M")
-
-    # ── Imagen ────────────────────────────────────────────────────────────────
 
     def abrir_selector_imagen(self):
         if platform == "android":
@@ -977,7 +940,6 @@ class MovimientoTab(BoxLayout):
         self._procesar_imagen(ruta)
 
     def _abrir_camara_android(self):
-        """Abre la cámara nativa en Android (requiere plyer / android.permissions)."""
         try:
             from plyer import camera
             ruta = os.path.join(tempfile.gettempdir(), "voucher_cap.jpg")
@@ -989,11 +951,9 @@ class MovimientoTab(BoxLayout):
     def _procesar_imagen(self, ruta: str):
         if not ruta or not os.path.exists(ruta):
             return
-        # PIL → compresión
         self._imagen_bytes = comprimir_imagen(ruta)
         size_kb = len(self._imagen_bytes) // 1024
         self.ids.lbl_imagen_ok.text = f"✅ Imagen lista ({size_kb} KB)"
-        # OCR automático
         resultado = ocr_desde_ruta(ruta)
         if resultado.get("descripcion"):
             self.ids.tf_descripcion.text = resultado["descripcion"]
@@ -1004,8 +964,6 @@ class MovimientoTab(BoxLayout):
         if resultado.get("hora"):
             self.ids.tf_hora_mov.text = resultado["hora"]
         mostrar_snack("Comprobante procesado ✔")
-
-    # ── Menú Tipo ─────────────────────────────────────────────────────────────
 
     def abrir_menu_tipo(self, caller):
         items = [
@@ -1038,8 +996,6 @@ class MovimientoTab(BoxLayout):
         box_deu.height  = dp(52) if es_deudor else dp(0)
         box_deu.opacity = 1      if es_deudor else 0
 
-    # ── Menú Gasto Fijo ───────────────────────────────────────────────────────
-
     def abrir_menu_gasto_fijo(self, caller):
         correo = MDApp.get_running_app().usuario_activo
         fijos  = [f for f in db.listar_gastos_fijos(correo)
@@ -1065,8 +1021,6 @@ class MovimientoTab(BoxLayout):
             self.ids.tf_descripcion.text = fijo["nombre"]
         if not self.ids.tf_monto.text:
             self.ids.tf_monto.text = str(fijo["monto"])
-
-    # ── Menú Deudor ───────────────────────────────────────────────────────────
 
     def abrir_menu_deudor(self, caller):
         correo   = MDApp.get_running_app().usuario_activo
@@ -1094,8 +1048,6 @@ class MovimientoTab(BoxLayout):
         if not self.ids.tf_monto.text:
             self.ids.tf_monto.text = str(deudor["monto"])
 
-    # ── Guardar ───────────────────────────────────────────────────────────────
-
     def guardar_movimiento(self):
         correo = MDApp.get_running_app().usuario_activo
         desc   = self.ids.tf_descripcion.text.strip()
@@ -1122,16 +1074,11 @@ class MovimientoTab(BoxLayout):
         mostrar_snack(f"Movimiento guardado  ✔  RD$ {monto:,.2f}")
         self.refrescar()
 
-        # Refrescar tabs relacionadas
         main = MDApp.get_running_app().root.get_screen("main")
         main.ids.tab_inicio.refrescar()
         main.ids.tab_deudores.refrescar()
         main.ids.tab_config.refrescar()
 
-
-# ══════════════════════════════════════════════════════════════════════════════
-# DEUDORES TAB
-# ══════════════════════════════════════════════════════════════════════════════
 
 class DeudoresTab(BoxLayout):
     _dialog = None
@@ -1156,12 +1103,10 @@ class DeudoresTab(BoxLayout):
                 secondary_text=f"RD$ {d['monto']:,.2f}  ·  {d['estado']}",
                 tertiary_text=d.get("descripcion", "")[:60],
             )
-            # Botón 📷 si tiene imagen relacionada
             self._agregar_acciones_deudor(item, d, pagado)
             lista.add_widget(item)
 
     def _agregar_acciones_deudor(self, item, deudor: dict, pagado: bool):
-        """Agrega botón de pagar y, si hay voucher, ícono 📷."""
         box = BoxLayout(
             size_hint=(None, None),
             width=dp(80), height=dp(46),
@@ -1174,7 +1119,6 @@ class DeudoresTab(BoxLayout):
             btn.bind(on_release=lambda *_: self._pagar_deudor(deudor["id"]))
             box.add_widget(btn)
 
-        # Buscar si tiene movimiento con imagen asociado
         movs = [m for m in db.listar_movimientos(MDApp.get_running_app().usuario_activo)
                 if m.get("deudor_id") == deudor["id"] and m["tiene_imagen"]]
         if movs:
@@ -1254,12 +1198,7 @@ class DeudoresTab(BoxLayout):
         dialog.open()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TARJETAS TAB
-# ══════════════════════════════════════════════════════════════════════════════
-
 class TarjetasTab(BoxLayout):
-
     def on_kv_post(self, base):
         Clock.schedule_once(lambda dt: self.refrescar(), 0.6)
 
@@ -1298,7 +1237,6 @@ class TarjetasTab(BoxLayout):
             md_bg_color=[0.12, 0.09, 0.28, 1],
         )
 
-        # ── Encabezado ──────────────────────────────────────────────────────
         header = BoxLayout(orientation="horizontal",
                            size_hint_y=None, height=dp(32))
         header.add_widget(MDLabel(
@@ -1319,7 +1257,6 @@ class TarjetasTab(BoxLayout):
         header.add_widget(btn_del)
         card.add_widget(header)
 
-        # ── Fechas ──────────────────────────────────────────────────────────
         card.add_widget(MDLabel(
             text=(f"Corte: día {tarjeta['dia_corte']}  ·  "
                   f"Límite pago: día {tarjeta['dia_limite_pago']}"),
@@ -1329,7 +1266,6 @@ class TarjetasTab(BoxLayout):
             height=dp(20),
         ))
 
-        # ── Montos: Próximo Pago (grande) + Monto Actual (pequeño) ──────────
         montos = BoxLayout(orientation="horizontal",
                            size_hint_y=None, height=dp(68))
 
@@ -1362,7 +1298,6 @@ class TarjetasTab(BoxLayout):
         montos.add_widget(col_actual)
         card.add_widget(montos)
 
-        # ── Badge flotabilidad ───────────────────────────────────────────────
         if balance["flotabilidad"] > 0:
             card.add_widget(MDLabel(
                 text=(f"⚡ Flotabilidad: RD$ {balance['flotabilidad']:,.2f}"
@@ -1376,7 +1311,6 @@ class TarjetasTab(BoxLayout):
         else:
             card.add_widget(MDLabel(size_hint_y=None, height=dp(4)))
 
-        # ── Botones ──────────────────────────────────────────────────────────
         btns = BoxLayout(orientation="horizontal",
                          size_hint_y=None, height=dp(40), spacing=dp(8))
         btn_c = MDRaisedButton(
@@ -1396,8 +1330,6 @@ class TarjetasTab(BoxLayout):
         db.eliminar_tarjeta(id_tarjeta)
         mostrar_snack("Tarjeta eliminada.")
         self.refrescar()
-
-    # ── Agregar tarjeta ───────────────────────────────────────────────────────
 
     def abrir_dialogo_agregar_tarjeta(self):
         tf_4     = MDTextField(hint_text="Últimos 4 dígitos",
@@ -1444,8 +1376,6 @@ class TarjetasTab(BoxLayout):
             ],
         )
         dialog.open()
-
-    # ── Agregar consumo ───────────────────────────────────────────────────────
 
     def abrir_dialogo_consumo(self, tarjeta: dict):
         tf_desc  = MDTextField(hint_text="Descripción / Comercio",
@@ -1513,8 +1443,6 @@ class TarjetasTab(BoxLayout):
         )
         dialog.open()
 
-    # ── Ver consumos de una tarjeta ───────────────────────────────────────────
-
     def ver_consumos(self, tarjeta: dict):
         consumos = db.listar_consumos_tarjeta(tarjeta["id"])
         lista = MDList()
@@ -1539,15 +1467,7 @@ class TarjetasTab(BoxLayout):
         d.open()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# CALENDARIO CONTENT
-# ══════════════════════════════════════════════════════════════════════════════
-
 class CalendarioContent(BoxLayout):
-    """
-    Grilla de calendario mensual que marca los días con movimientos.
-    Navega entre meses con ◀ ▶. Toca un día marcado para ver el detalle.
-    """
     MESES_ES = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
 
@@ -1570,7 +1490,6 @@ class CalendarioContent(BoxLayout):
             self.correo, self._anio, self._mes)
         today = datetime.now()
 
-        # ── Header navegación ────────────────────────────────────────────────
         nav = BoxLayout(orientation="horizontal",
                         size_hint_y=None, height=dp(48))
         btn_prev = MDIconButton(icon="chevron-left",
@@ -1586,7 +1505,6 @@ class CalendarioContent(BoxLayout):
         nav.add_widget(btn_next)
         self.add_widget(nav)
 
-        # ── Encabezados días semana ──────────────────────────────────────────
         dias_hdr = BoxLayout(orientation="horizontal",
                              size_hint_y=None, height=dp(24))
         for d in ["L", "M", "X", "J", "V", "S", "D"]:
@@ -1595,14 +1513,13 @@ class CalendarioContent(BoxLayout):
                 theme_text_color="Hint", font_style="Caption"))
         self.add_widget(dias_hdr)
 
-        # ── Grilla de días ───────────────────────────────────────────────────
         semanas = calendar.monthcalendar(self._anio, self._mes)
         for semana in semanas:
             fila = BoxLayout(orientation="horizontal",
                              size_hint_y=None, height=dp(46), spacing=dp(2))
             for dia in semana:
                 if dia == 0:
-                    fila.add_widget(BoxLayout())   # celda vacía
+                    fila.add_widget(BoxLayout())
                     continue
 
                 is_today   = (dia == today.day and
@@ -1611,7 +1528,6 @@ class CalendarioContent(BoxLayout):
                 tiene_movs = dia in dias_movs
 
                 if tiene_movs:
-                    # Botón tappable con fondo morado
                     celda = BoxLayout(orientation="vertical", padding=dp(2))
                     btn = MDRaisedButton(
                         text=str(dia),
@@ -1642,7 +1558,6 @@ class CalendarioContent(BoxLayout):
                     ))
             self.add_widget(fila)
 
-        # Ajusta height dinámicamente según semanas renderizadas
         self.height = dp(48 + 24 + len(semanas) * 48 + 16)
 
     def _cambiar_mes(self, delta: int):
@@ -1673,10 +1588,6 @@ class CalendarioContent(BoxLayout):
         d.open()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# CONFIG TAB
-# ══════════════════════════════════════════════════════════════════════════════
-
 class ConfigTab(BoxLayout):
     _historial_dialog = None
 
@@ -1690,8 +1601,6 @@ class ConfigTab(BoxLayout):
         self.ids.lbl_sesion_activa.text = f"SESIÓN: {correo}"
         self._cargar_gastos_fijos(correo)
 
-    # ── Gastos Fijos ──────────────────────────────────────────────────────────
-
     def _cargar_gastos_fijos(self, correo: str):
         db.reset_gastos_fijos_si_nuevo_mes(correo)
         fijos = db.listar_gastos_fijos(correo)
@@ -1701,16 +1610,14 @@ class ConfigTab(BoxLayout):
 
         for f in fijos:
             self._agregar_item_fijo(box, f)
-        box.height = box.minimum_height  # type: ignore
+        box.height = box.minimum_height
 
     def _agregar_item_fijo(self, box: BoxLayout, fijo: dict):
-        """Fila con nombre, monto, switch Pendiente/Pagado y botón eliminar."""
         row = BoxLayout(
             orientation="horizontal",
             size_hint_y=None, height=dp(54),
             spacing=dp(8),
         )
-        # Info
         info = BoxLayout(orientation="vertical")
         info.add_widget(MDLabel(
             text=f"[b]{fijo['nombre']}[/b]",
@@ -1724,25 +1631,21 @@ class ConfigTab(BoxLayout):
         ))
         row.add_widget(info)
 
-        # Switch Pendiente / Pagado
         sw = MDSwitch(
             active=(fijo["estado"] == "Pagado"),
             size_hint=(None, None),
             width=dp(52), height=dp(36),
         )
-        correo = MDApp.get_running_app().usuario_activo
 
         def on_switch(instance, value, fid=fijo["id"]):
             nuevo = "Pagado" if value else "Pendiente"
             db.actualizar_estado_gasto_fijo(fid, nuevo)
-            # Refresca el disponible en Inicio
             main = MDApp.get_running_app().root.get_screen("main")
             main.ids.tab_inicio.refrescar()
 
         sw.bind(active=on_switch)
         row.add_widget(sw)
 
-        # Botón eliminar
         btn_del = MDIconButton(icon="trash-can-outline",
                                theme_text_color="Custom",
                                text_color=RED)
@@ -1778,7 +1681,6 @@ class ConfigTab(BoxLayout):
             db.agregar_gasto_fijo(correo, nombre, monto)
             dialog.dismiss()
             self.refrescar()
-            # Refrescar inicio también
             MDApp.get_running_app().root.get_screen("main") \
                 .ids.tab_inicio.refrescar()
             mostrar_snack(f"'{nombre}' agregado como gasto fijo.")
@@ -1803,11 +1705,8 @@ class ConfigTab(BoxLayout):
             .ids.tab_inicio.refrescar()
         mostrar_snack("Gasto fijo eliminado.")
 
-    # ── Calculadoras financieras ──────────────────────────────────────────────
-
     @staticmethod
     def _calc_pmt(P: float, r: float, n: int) -> float:
-        """Cuota fija dada tasa periódica r, capital P y n períodos."""
         if r < 1e-12:
             return P / n
         A = (1 + r) ** n
@@ -1816,7 +1715,6 @@ class ConfigTab(BoxLayout):
     @staticmethod
     def _calc_tabla_amort(P: float, r: float, n: int, PMT: float,
                           extras: dict) -> list:
-        """Genera filas [{num, cuota, capital, interes, extra, balance}]."""
         filas = []
         balance = P
         for i in range(1, n + 201):
@@ -1838,11 +1736,6 @@ class ConfigTab(BoxLayout):
 
     @staticmethod
     def _resolver_campo(P_s, i_s, n_s, PMT_s, freq) -> dict:
-        """
-        Resuelve el campo vacío de los 4 (P, i%, n, PMT).
-        Retorna {"ok": True, "P":..., "r":..., "n":..., "PMT":...}
-        o       {"ok": False, "error": "..."}
-        """
         import math
         pp = 12 if freq == "mensual" else 24
 
@@ -1883,11 +1776,11 @@ class ConfigTab(BoxLayout):
                     return {"ok": False, "error": "Cuota insuficiente: no cubre ni los intereses."}
                 else:
                     n = int(math.ceil(-math.log(1 - P * r / PMT) / math.log(1 + r)))
-            else:  # campo == "i" — Newton-Raphson
+            else:
                 P, n, PMT = fv(P_s), int(float(fv(n_s))), fv(PMT_s)
                 if PMT * n <= P:
                     return {"ok": False, "error": "Cuota insuficiente para amortizar el capital."}
-                r = PMT / P / n  # estimado inicial
+                r = PMT / P / n
 
                 def f(rv):
                     if rv < 1e-12:
@@ -1913,20 +1806,13 @@ class ConfigTab(BoxLayout):
         except Exception as exc:
             return {"ok": False, "error": f"Valores inválidos: {exc}"}
 
-        if campo != "i":
-            r   = (fv(i_s) / 100) / pp if campo != "i" else r  # noqa already set above
-        if campo != "i":
-            ia  = fv(i_s) if campo != "i" else ia               # noqa
+        r   = (fv(i_s) / 100) / pp if campo != "i" else r
+        ia  = fv(i_s) if campo != "i" else ia
         PMT_fin = ConfigTab._calc_pmt(P, r, n)
         return {"ok": True, "P": P, "r": r, "n": n, "PMT": PMT_fin,
-                "ia": ia if campo != "PMT" else fv(i_s), "campo": campo}
+                "ia": ia, "campo": campo}
 
     def abrir_calculador_amort(self):
-        """Abre un diálogo con el solver de 4 campos + tabla de amortización."""
-        from kivy.uix.gridlayout import GridLayout
-        import math
-
-        # ── Campos de entrada ──
         tf_P   = MDTextField(hint_text="Capital P  (deja vacío para calcular)",
                              input_filter="float", mode="rectangle")
         tf_i   = MDTextField(hint_text="Tasa anual %  (deja vacío para calcular)",
@@ -1961,8 +1847,7 @@ class ConfigTab(BoxLayout):
         caja.add_widget(lbl_resultado)
         caja.add_widget(sv_tabla)
 
-        freq = ["mensual"]  # mutable reference
-
+        freq = ["mensual"]
         dialog = None
 
         def calcular(*_):
@@ -1978,13 +1863,11 @@ class ConfigTab(BoxLayout):
             campo = res["campo"]
             ia    = res["ia"]
 
-            # Rellenar campo calculado
             if campo == "PMT": tf_pmt.text = f"{PMT:.2f}"
             elif campo == "P": tf_P.text   = f"{P:.2f}"
             elif campo == "n": tf_n.text   = str(n)
             elif campo == "i": tf_i.text   = f"{ia:.4f}"
 
-            # Resumen
             filas = ConfigTab._calc_tabla_amort(P, r, n, PMT, {})
             total_pago    = sum(f["cuota"]   for f in filas)
             total_interes = sum(f["interes"] for f in filas)
@@ -1994,7 +1877,6 @@ class ConfigTab(BoxLayout):
             )
             lbl_resultado.text_color = [0.20, 0.85, 0.50, 1]
 
-            # Poblar tabla
             lista_tabla.clear_widgets()
             for f in filas:
                 lista_tabla.add_widget(TwoLineListItem(
@@ -2022,7 +1904,6 @@ class ConfigTab(BoxLayout):
         dialog.open()
 
     def abrir_autofinanciamiento(self):
-        """Abre un diálogo de autofinanciamiento (tasa 0%, cuotas iguales)."""
         tf_nombre = MDTextField(hint_text="¿Qué vas a financiar?", mode="rectangle")
         tf_precio = MDTextField(hint_text="Precio total (RD$)",
                                 input_filter="float", mode="rectangle")
@@ -2083,8 +1964,6 @@ class ConfigTab(BoxLayout):
         )
         dialog.open()
 
-    # ── Historial ─────────────────────────────────────────────────────────────
-
     def ver_historial(self):
         correo = MDApp.get_running_app().usuario_activo
         movs   = db.listar_movimientos(correo)
@@ -2136,8 +2015,6 @@ class ConfigTab(BoxLayout):
         )
         d.open()
 
-    # ── Calendario ────────────────────────────────────────────────────────────
-
     def ver_calendario(self):
         correo = MDApp.get_running_app().usuario_activo
         cal_content = CalendarioContent(correo=correo)
@@ -2152,13 +2029,7 @@ class ConfigTab(BoxLayout):
         )
         d.open()
 
-    # ── Migración legado ──────────────────────────────────────────────────────
-
     def importar_historial_legado(self):
-        """
-        Llama a migrate_json_to_db.migrar_todo() con el usuario activo y
-        muestra un diálogo de confirmación antes de proceder.
-        """
         import os as _os
         correo = MDApp.get_running_app().usuario_activo
         if not correo:
@@ -2215,7 +2086,6 @@ class ConfigTab(BoxLayout):
             )
             d2.open()
 
-            # Refrescar vistas
             try:
                 main = MDApp.get_running_app().root.get_screen("main")
                 main.ids.tab_inicio.refrescar()
@@ -2242,8 +2112,6 @@ class ConfigTab(BoxLayout):
         )
         dialog.open()
 
-    # ── Cerrar Sesión ─────────────────────────────────────────────────────────
-
     def cerrar_sesion(self):
         app = MDApp.get_running_app()
         if app.store.exists("session"):
@@ -2258,25 +2126,18 @@ class ConfigTab(BoxLayout):
 # ══════════════════════════════════════════════════════════════════════════════
 
 class FinanzasApp(MDApp):
-    """Punto de entrada de la app."""
-
     usuario_activo = StringProperty("")
 
     def build(self):
-        # Tema oscuro con acento morado
         self.theme_cls.primary_palette  = "DeepPurple"
         self.theme_cls.accent_palette   = "Purple"
         self.theme_cls.theme_style      = "Dark"
         self.title = "Mis Finanzas"
 
-        # Sesión persistente
         self.store = JsonStore(STORE_PATH)
 
-        # Inicializar base de datos
         db.init_db()
 
-        # Registrar clases Python para Builder
-        Builder.load_string("")  # flush
         return Builder.load_string(KV)
 
 
