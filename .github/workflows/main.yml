@@ -47,7 +47,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install "cython<3.0.0"
-          pip install "buildozer
+          pip install "buildozer"
           
 
       - name: Clean previous build cache
