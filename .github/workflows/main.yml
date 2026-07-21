@@ -9,20 +9,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # Usamos ubuntu-22.04 para mayor estabilidad con Buildozer
+    runs-on: ubuntu-22.04
 
     steps:
-      # 1. Descargar el código
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Configurar Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      # 3. Instalar dependencias del sistema requeridas
       - name: Install System Dependencies
         run: |
           sudo apt-get update
@@ -43,20 +40,20 @@ jobs:
             zip \
             unzip
 
-      # 4. Instalar Buildozer y Cython
-      - name: Install Buildozer
+      - name: Install Buildozer & Cython
         run: |
           pip install --upgrade pip
           pip install "buildozer>=1.5.0" cython
 
-      # 5. Compilar el APK con Buildozer
+      # Limpia compilaciones fallidas previas para evitar conflictos de Gradle
+      - name: Clean Buildozer cache
+        run: |
+          buildozer android clean || true
+
       - name: Build APK
-        env:
-          ACCEPT_BUILD_NDK_LICENSES: '1'
         run: |
           buildozer -v android debug
 
-      # 6. Subir el APK resultante a Artifacts
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
