@@ -2126,24 +2126,34 @@ class ConfigTab(BoxLayout):
 # ══════════════════════════════════════════════════════════════════════════════
 
 class FinanzasApp(MDApp):
+    # Variable global para rastrear el correo del usuario con sesión activa
     usuario_activo = StringProperty("")
 
     def build(self):
+        # Configuración del tema visual de la aplicación (KivyMD)
         self.theme_cls.primary_palette  = "DeepPurple"
         self.theme_cls.accent_palette   = "Purple"
         self.theme_cls.theme_style      = "Dark"
         self.title = "Mis Finanzas"
 
+        # Inicialización del almacenamiento de sesión y la base de datos local SQLite
         self.store = JsonStore(STORE_PATH)
-
         db.init_db()
 
+        # Construcción y carga de la interfaz gráfica desde la variable KV
         return Builder.load_string(KV)
 
+    def on_start(self):
+        # EVENTO AUTOMÁTICO: Se ejecuta una vez que la pantalla ya cargó para evitar cierres (crashes).
+        # Revisa si hay una sesión previa guardada en el teléfono.
+        if self.store.exists("session"):
+            correo = self.store.get("session").get("correo", "")
+            if correo:
+                # Carga los datos del usuario activo y redirige directamente a la pantalla principal
+                self.usuario_activo = correo
+                db.reset_gastos_fijos_si_nuevo_mes(correo)
+                self.root.current = "main"
 
-# ══════════════════════════════════════════════════════════════════════════════
-# ENTRY POINT
-# ══════════════════════════════════════════════════════════════════════════════
-
-if __name__ == "__main__":
+# Punto de entrada principal para ejecutar la aplicación
+if _name_ == "_main_":
     FinanzasApp().run()
