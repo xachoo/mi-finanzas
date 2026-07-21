@@ -1,9 +1,12 @@
+[app]
 
 # (str) Title of your application
 title = Mi Finanzas
 
 # (str) Package name
 package.name = mifinanzas
+
+
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
