@@ -1,0 +1,21 @@
+{
+  "gastos": [
+    {
+      "descripcion": "Dieta",
+      "categoria": "Alimentación",
+      "monto": 50.01,
+      "fecha": "17/06/2026 19:54"
+    }
+  ],
+  "extras": [],
+  "deudores": [],
+  "gastos_fijos": [],
+  "pagos_fijos": [],
+  "pagos_banco_popular": [],
+  "pagos_banreservas": [],
+  "config": {
+    "ingreso_base": 11700.0,
+    "deuda_banco_popular": 34504.28,
+    "deuda_banreservas": 0.0
+  }
+}
