@@ -12,12 +12,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Ajustado a Python 3.11
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
-      # Configuración explícita de Java 17
+      # Configuración de Java 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -45,31 +46,26 @@ jobs:
             zip \
             unzip
 
+      # Para Python 3.11 se requiere Cython 3+ y buildozer actualizado
       - name: Install Buildozer & Cython
         run: |
-          pip install --upgrade pip
-          pip install "cython<3.0.0"
+          pip install --upgrade pip setuptools wheel
+          pip install "cython>=3.0.0"
           pip install "buildozer"
-          
 
       - name: Clean previous build cache
         run: |
           buildozer android clean || true
 
       - name: Build APK
-        # =========================================================================
-        # COMENTARIO: Agregamos el bloque 'env' justo debajo de 'run' en este paso.
-        # QUÉ HACE: Obliga a Buildozer a utilizar la versión 25b del NDK de Android, 
-        # evitando que el sistema tome por defecto una versión más nueva del servidor 
-        # que rompe la compilación de las librerías nativas (como SDL2 y FreeType).
-        # =========================================================================
         run: |
           buildozer -v android debug
         env:
-          ANDROID_NDK_HOME: /home/runner/.buildozer/android/platform/android-ndk-r25b # <-- AQUÍ SE INGRESÓ
+          ANDROID_NDK_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r25b
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
           path: bin/*.apk
+          if-no-files-found: error
