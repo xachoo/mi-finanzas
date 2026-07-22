@@ -12,10 +12,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Ajustado a Python 3.11
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       # Configuración de Java 17
       - name: Set up JDK 17
@@ -45,10 +46,11 @@ jobs:
             zip \
             unzip
 
+      # Para Python 3.11 se requiere Cython 3+ y buildozer actualizado
       - name: Install Buildozer & Cython
         run: |
-          pip install --upgrade pip
-          pip install "cython<3.0.0"
+          pip install --upgrade pip setuptools wheel
+          pip install "cython>=3.0.0"
           pip install "buildozer"
 
       - name: Clean previous build cache
@@ -56,8 +58,6 @@ jobs:
           buildozer android clean || true
 
       - name: Build APK
-        # La variable ANDROID_NDK_HOME apunta a la ruta dinámica del runner
-        # para asegurar la compatibilidad con el NDK descargado por Buildozer.
         run: |
           buildozer -v android debug
         env:
