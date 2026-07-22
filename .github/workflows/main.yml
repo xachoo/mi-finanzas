@@ -1,4 +1,4 @@
-name: Build Android APK (Buildozer)
+Name: Build Android APK (Buildozer)
 
 on:
   push:
@@ -57,8 +57,16 @@ jobs:
           buildozer android clean || true
 
       - name: Build APK
+        # =========================================================================
+        # COMENTARIO: Agregamos el bloque 'env' justo debajo de 'run' en este paso.
+        # QUÉ HACE: Obliga a Buildozer a utilizar la versión 25b del NDK de Android, 
+        # evitando que el sistema tome por defecto una versión más nueva del servidor 
+        # que rompe la compilación de las librerías nativas (como SDL2 y FreeType).
+        # =========================================================================
         run: |
           buildozer -v android debug
+        env:
+          ANDROID_NDK_HOME: /home/runner/.buildozer/android/platform/android-ndk-r25b # <-- AQUÍ SE INGRESÓ
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
