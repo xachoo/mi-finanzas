@@ -129,7 +129,43 @@ class SectionLabel(MDLabel):
 class BigMonto(MDLabel):
     pass
 
+import sqlite3
+import os
 
+def inicializar_usuario_prueba():
+    try:
+        # Asegurarnos de usar una ruta local limpia o el nombre exacto de tu base de datos
+        conexion = sqlite3.connect('finanzas.db')
+        cursor = conexion.cursor()
+
+        # Creamos la tabla solo si no existe
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS usuarios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                usuario TEXT UNIQUE NOT NULL,
+                contrasena TEXT NOT NULL
+            )
+        ''')
+
+        usuario_fijo = "admin"
+        contrasena_fija = "1234"
+
+        # Verificamos primero si ya existe para evitar errores internos
+        cursor.execute("SELECT * FROM usuarios WHERE usuario = ?", (usuario_fijo,))
+        existe = cursor.fetchone()
+
+        if not existe:
+            cursor.execute('''
+                INSERT INTO usuarios (usuario, contrasena) 
+                VALUES (?, ?)
+            ''', (usuario_fijo, contrasena_fija))
+            conexion.commit()
+            print("Usuario de prueba creado con éxito.")
+
+        conexion.close()
+    except Exception as e:
+        # Esto evita que la aplicación se cierre sola si ocurre un error de base de datos
+        print(f"Error al inicializar la base de datos: {e}")
 # ══════════════════════════════════════════════════════════════════════════════
 # UTILIDADES
 # ══════════════════════════════════════════════════════════════════════════════
