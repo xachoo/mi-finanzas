@@ -132,40 +132,52 @@ class BigMonto(MDLabel):
 import sqlite3
 import os
 
-def inicializar_usuario_prueba():
-    try:
-        # Asegurarnos de usar una ruta local limpia o el nombre exacto de tu base de datos
-        conexion = sqlite3.connect('finanzas.db')
-        cursor = conexion.cursor()
+def inicializar_base_datos():
+    # Usamos una ruta segura para la base de datos local
+    ruta_db = 'finanzas.db'
 
-        # Creamos la tabla solo si no existe
+    def on_enter(self, *args):
+        # esto rellena los campos del lobby
+        try:
+            self.ids.input_usuario.text = "test_user"
+            self.ids.input_contrasena.text = "123456"
+        except:
+            pass
+        inicializar_base_datos()
+    
+    conexion = sqlite3.connect(ruta_db)
+    cursor = conexion.cursor()
+
+    # 1. Creamos la tabla de usuarios si no existe
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            usuario TEXT UNIQUE NOT NULL,
+            contrasena TEXT NOT NULL
+        )
+    ''')
+
+    # 2. Definimos el usuario fijo para pruebas
+    usuario_fijo = "test_user"
+    contrasena_fija = "123456"
+
+    # 3. Verificamos si ya existe para no duplicarlo ni causar errores de integridad
+    cursor.execute("SELECT * FROM usuarios WHERE usuario = ?", (usuario_fijo,))
+    existe = cursor.fetchone()
+
+    if not existe:
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS usuarios (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                usuario TEXT UNIQUE NOT NULL,
-                contrasena TEXT NOT NULL
-            )
-        ''')
+            INSERT INTO usuarios (usuario, contrasena) 
+            VALUES (?, ?)
+        ''', (usuario_fijo, contrasena_fija))
+        conexion.commit()
+        print("Usuario de prueba insertado correctamente.")
+    
+    conexion.close()
 
-        usuario_fijo = "admin"
-        contrasena_fija = "1234"
-
-        # Verificamos primero si ya existe para evitar errores internos
-        cursor.execute("SELECT * FROM usuarios WHERE usuario = ?", (usuario_fijo,))
-        existe = cursor.fetchone()
-
-        if not existe:
-            cursor.execute('''
-                INSERT INTO usuarios (usuario, contrasena) 
-                VALUES (?, ?)
-            ''', (usuario_fijo, contrasena_fija))
-            conexion.commit()
-            print("Usuario de prueba creado con éxito.")
-
-        conexion.close()
-    except Exception as e:
-        # Esto evita que la aplicación se cierre sola si ocurre un error de base de datos
-        print(f"Error al inicializar la base de datos: {e}")
+# Asegúrate de llamar a esta función al arrancar tu script principal de Python
+if __name__ == '_main_':
+    inicializar_base_datos()
 # ══════════════════════════════════════════════════════════════════════════════
 # UTILIDADES
 # ══════════════════════════════════════════════════════════════════════════════
