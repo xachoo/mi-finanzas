@@ -1,4 +1,4 @@
-Name: Build Android APK (Buildozer)
+name: Build Android APK (Buildozer)
 
 on:
   push:
