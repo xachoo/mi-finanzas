@@ -1,9 +1,12 @@
+[app]
 
 # (str) Title of your application
 title = Mi Finanzas
 
 # (str) Package name
 package.name = mifinanzas
+
+
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
@@ -19,7 +22,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.3.0, kivymd, cython==0.29.33, hostpython3
+requirements = python3,kivy,kivymd,cython,hostpython3
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
