@@ -18,8 +18,8 @@ source.include_exts = py,png,jpg,kv,atlas,json,ttf
 # (str) Application versioning
 version = 0.1
 
-# (list) Application requirements adaptados a Python 3.11
-requirements = python3,kivy==2.3.0,kivymd==1.2.0,pillow
+# (list) Application requirements - Python 3.11 compatible
+requirements = python3.11,kivy==2.3.0,kivymd==1.2.0,pillow
 
 # (str) Supported orientation
 orientation = portrait
