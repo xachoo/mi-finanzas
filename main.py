@@ -4281,5 +4281,5 @@ class FinanzasApp(MDApp):
                 self.root.current = "main"
 
 # Punto de entrada principal para ejecutar la aplicación
-if __name__ == "_main_":
+if __name__ == "__main__":
     FinanzasApp().run()
